@@ -18,6 +18,7 @@ static Game* Game_new();
 static void Game_clean(Game* g);
 static int init(Game* g);
 static void Game_loop(Game* g);
+static void eventHandler(Game *g);
 
 static Game* Game_new()
 {
@@ -55,29 +56,40 @@ static int init(Game* g)
 
 static void Game_loop(Game* g)
 {
-    SDL_Event e;
     while(g->running)
     {
-        while (SDL_PollEvent(&e)) {
-            switch (e.type) {
-                case SDL_WINDOWEVENT_CLOSE:
-                    g->running = false;
-                    break;
-                case SDL_KEYDOWN:
-                    switch (e.key.keysym.sym) {
-                        case SDLK_ESCAPE:
-                            g->running = false;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case SDL_QUIT:
-                    g->running = false;
-                    break;
-                default:
-                    break;
-            }
+        eventHandler(g);
+        SDL_SetRenderDrawColor( WM_get_renderer(g->wm), 255, 255, 255, 255 );
+        SDL_RenderClear( WM_get_renderer(g->wm) );
+        Character_draw(g->player);
+    }
+}
+
+static void eventHandler(Game *g)
+{
+    SDL_Event e;
+    while (SDL_PollEvent(&e))
+    {
+        switch (e.type)
+        {
+            case SDL_WINDOWEVENT_CLOSE:
+                g->running = false;
+                break;
+            case SDL_KEYDOWN:
+                switch (e.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
+                        g->running = false;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case SDL_QUIT:
+                g->running = false;
+                break;
+            default:
+                break;
         }
     }
 }
