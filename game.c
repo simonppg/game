@@ -19,6 +19,7 @@ static void Game_clean(Game* g);
 static int init(Game* g);
 static void Game_loop(Game* g);
 static void eventHandler(Game *g);
+static void draw(Game *g);
 
 static Game* Game_new()
 {
@@ -59,9 +60,7 @@ static void Game_loop(Game* g)
     while(g->running)
     {
         eventHandler(g);
-        SDL_SetRenderDrawColor( WM_get_renderer(g->wm), 255, 255, 255, 255 );
-        SDL_RenderClear( WM_get_renderer(g->wm) );
-        Character_draw(g->player);
+        draw(g);
     }
 }
 
@@ -92,6 +91,13 @@ static void eventHandler(Game *g)
                 break;
         }
     }
+}
+
+static void draw(Game *g)
+{
+        SDL_SetRenderDrawColor( WM_get_renderer(g->wm), 255, 255, 255, 255 );
+        SDL_RenderClear( WM_get_renderer(g->wm) );
+        Character_draw(g->player);
 }
 
 int main()

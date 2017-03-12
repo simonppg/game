@@ -30,8 +30,8 @@ static void init(Character* c, SDL_Renderer* r)
 
     c->rect.x = 0;
     c->rect.y = 0;
-    c->rect.w = 100;
-    c->rect.h = 100;
+    c->rect.w = 50;
+    c->rect.h = 50;
 
     c->renderer = r;
 }
@@ -40,10 +40,6 @@ void Character_draw(const Character *c)
 {
     if(c == NULL)
         return;
-
-    //SDL_SetRenderDrawColor( c->renderer, 255, 0, 0, 255 );
-
-    //SDL_RenderClear( c->renderer );
 
     SDL_SetRenderDrawColor( c->renderer, 0, 0, 255, 255 );
 
