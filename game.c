@@ -81,6 +81,7 @@ static void eventHandler(Game *g)
                         g->running = false;
                         break;
                     default:
+                        Character_update(g->player);
                         break;
                 }
                 break;

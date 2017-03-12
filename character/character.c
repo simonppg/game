@@ -3,11 +3,13 @@
 #include <SDL2/SDL_render.h>
 
 #include "character.h"
+#include "utils.h"
 
 struct Character
 {
     SDL_Rect rect;
-    SDL_Renderer* renderer;
+    SDL_Renderer *renderer;
+    Vector *vector;
 };
 
 static void init(Character* c, SDL_Renderer* r);
@@ -34,6 +36,7 @@ static void init(Character* c, SDL_Renderer* r)
     c->rect.h = 50;
 
     c->renderer = r;
+    c->vector = Vector_new(0, 0);
 }
 
 void Character_draw(const Character *c)
@@ -46,4 +49,18 @@ void Character_draw(const Character *c)
     SDL_RenderFillRect( c->renderer, &c->rect );
 
     SDL_RenderPresent(c->renderer);
+}
+
+/*
+ * Character_update: update all the properties of the character, like position,
+ * size, speed, etc...
+ */
+void Character_update(Character *c)
+{
+    Vector_update(c->vector,
+            Vector_get_x(c->vector) + 1,
+            Vector_get_y(c->vector) + 1);
+
+    c->rect.x = Vector_get_x(c->vector);
+    c->rect.y = Vector_get_y(c->vector);
 }
