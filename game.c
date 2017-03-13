@@ -81,7 +81,6 @@ static void eventHandler(Game *g)
                         g->running = false;
                         break;
                     default:
-                        Character_update(g->player);
                         break;
                 }
                 break;
@@ -92,13 +91,17 @@ static void eventHandler(Game *g)
                 break;
         }
     }
+
+    const Uint8 *k_state = SDL_GetKeyboardState(NULL);
+    Character_update(g->player, k_state);
+
 }
 
 static void draw(Game *g)
 {
-        SDL_SetRenderDrawColor( WM_get_renderer(g->wm), 255, 255, 255, 255 );
-        SDL_RenderClear( WM_get_renderer(g->wm) );
-        Character_draw(g->player);
+    SDL_SetRenderDrawColor( WM_get_renderer(g->wm), 255, 255, 255, 255 );
+    SDL_RenderClear( WM_get_renderer(g->wm) );
+    Character_draw(g->player);
 }
 
 int main()

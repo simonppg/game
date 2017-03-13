@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 
@@ -13,6 +14,9 @@ struct Character
 };
 
 static void init(Character* c, SDL_Renderer* r);
+static void update_position(Character *c, const Uint8 *k_state);
+static void move_to_left(Character *c);
+static void move_to_right(Character *c);
 
 Character* Character_new(SDL_Renderer* r)
 {
@@ -55,12 +59,34 @@ void Character_draw(const Character *c)
  * Character_update: update all the properties of the character, like position,
  * size, speed, etc...
  */
-void Character_update(Character *c)
+void Character_update(Character *c, const Uint8 *k_state)
+{
+    update_position(c, k_state);
+    c->rect.x = Vector_get_x(c->vector);
+    c->rect.y = Vector_get_y(c->vector);
+}
+
+static void update_position(Character *c, const Uint8 *k_state)
+{
+    if(k_state[SDL_SCANCODE_LEFT]) {
+            move_to_left(c);
+    } else if(k_state[SDL_SCANCODE_RIGHT]) {
+            move_to_right(c);
+    }
+}
+
+static void move_to_left(Character *c)
+{
+    Vector_update(c->vector,
+            Vector_get_x(c->vector) - 1,
+            Vector_get_y(c->vector));
+
+}
+
+static void move_to_right(Character *c)
 {
     Vector_update(c->vector,
             Vector_get_x(c->vector) + 1,
-            Vector_get_y(c->vector) + 1);
+            Vector_get_y(c->vector));
 
-    c->rect.x = Vector_get_x(c->vector);
-    c->rect.y = Vector_get_y(c->vector);
 }
