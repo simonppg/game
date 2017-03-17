@@ -1,16 +1,26 @@
 cmake_minimum_required (VERSION 2.6)
 project (game)
 
-add_subdirectory(utils)
-add_subdirectory(character)
+# Creating a static library
+add_library(player player.c)
+target_include_directories (player PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(player utils)
 
+# Creating a static library
+add_library(utils utils.c window_manager.c)
+target_include_directories (utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Creating the executable program
 add_executable (game game.c)
 set(CMAKE_BUILD_TYPE Debug)
 
-INCLUDE(FindPkgConfig)
+# Setting dependencies
+include(FindPkgConfig)
+pkg_search_module(SDL2 REQUIRED sdl2)
+pkg_search_module(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
-PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+# Setting include directories
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} utils character ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
+# Linking static and shared libraries
+target_link_libraries(${PROJECT_NAME} utils player ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})

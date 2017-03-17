@@ -3,14 +3,14 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "utils/window_manager.h"
-#include "character/character.h"
+#include "window_manager.h"
+#include "player.h"
 
 typedef struct Game Game;
 struct Game {
     bool running;
     Window_manager* wm;
-    Character* player;
+    Player* player;
     SDL_Event e;
 };
 
@@ -50,7 +50,7 @@ static int init(Game* g)
     }
 
     SDL_Renderer* r = WM_get_renderer(g->wm);
-    g->player = Character_new(r);
+    g->player = Player_new(r);
     g->running = true;
     return 0;
 }
@@ -93,7 +93,7 @@ static void eventHandler(Game *g)
     }
 
     const Uint8 *k_state = SDL_GetKeyboardState(NULL);
-    Character_update(g->player, k_state);
+    Player_update(g->player, k_state);
 
 }
 
@@ -101,7 +101,7 @@ static void draw(Game *g)
 {
     SDL_SetRenderDrawColor( WM_get_renderer(g->wm), 255, 255, 255, 255 );
     SDL_RenderClear( WM_get_renderer(g->wm) );
-    Character_draw(g->player);
+    Player_draw(g->player);
 }
 
 int main()

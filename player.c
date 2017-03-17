@@ -3,33 +3,33 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 
-#include "character.h"
+#include "player.h"
 #include "utils.h"
 
-struct Character
+struct Player 
 {
     SDL_Rect rect;
     SDL_Renderer *renderer;
     Vector *vector;
 };
 
-static void init(Character* c, SDL_Renderer* r);
-static void update_position(Character *c, const Uint8 *k_state);
-static void move_to_left(Character *c);
-static void move_to_right(Character *c);
+static void init(Player * c, SDL_Renderer* r);
+static void update_position(Player *c, const Uint8 *k_state);
+static void move_to_left(Player *c);
+static void move_to_right(Player *c);
 
-Character* Character_new(SDL_Renderer* r)
+Player *Player_new(SDL_Renderer* r)
 {
-    Character* c = NULL;
+    Player * c = NULL;
 
-    c = (Character *) malloc(sizeof(Character));
+    c = (Player *) malloc(sizeof(Player ));
 
     if(c != NULL)
         init(c, r);
     return c;
 }
 
-static void init(Character* c, SDL_Renderer* r)
+static void init(Player * c, SDL_Renderer* r)
 {
     if(c == NULL)
         return;
@@ -43,7 +43,7 @@ static void init(Character* c, SDL_Renderer* r)
     c->vector = Vector_new(0, 0);
 }
 
-void Character_draw(const Character *c)
+void Player_draw(const Player *c)
 {
     if(c == NULL)
         return;
@@ -56,17 +56,17 @@ void Character_draw(const Character *c)
 }
 
 /*
- * Character_update: update all the properties of the character, like position,
+ * Player : update all the properties of the Player , like position,
  * size, speed, etc...
  */
-void Character_update(Character *c, const Uint8 *k_state)
+void Player_update(Player *c, const Uint8 *k_state)
 {
     update_position(c, k_state);
     c->rect.x = Vector_get_x(c->vector);
     c->rect.y = Vector_get_y(c->vector);
 }
 
-static void update_position(Character *c, const Uint8 *k_state)
+static void update_position(Player *c, const Uint8 *k_state)
 {
     if(k_state[SDL_SCANCODE_LEFT]) {
             move_to_left(c);
@@ -75,7 +75,7 @@ static void update_position(Character *c, const Uint8 *k_state)
     }
 }
 
-static void move_to_left(Character *c)
+static void move_to_left(Player *c)
 {
     Vector_update(c->vector,
             Vector_get_x(c->vector) - 1,
@@ -83,7 +83,7 @@ static void move_to_left(Character *c)
 
 }
 
-static void move_to_right(Character *c)
+static void move_to_right(Player *c)
 {
     Vector_update(c->vector,
             Vector_get_x(c->vector) + 1,
