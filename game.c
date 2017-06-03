@@ -35,6 +35,7 @@ static void Game_clean(Game* g)
     if(g == NULL)
         return;
 
+    Player_clear(g->player);
     WM_clean(g->wm);
 }
 

@@ -23,6 +23,12 @@ Vector* Vector_new(int x, int y)
     return v;
 }
 
+void Vector_clear(Vector *v)
+{
+    if(v != NULL)
+        free(v);
+}
+
 static void init(Vector *v, int x, int y)
 {
     v->x = x;

@@ -10,7 +10,7 @@ struct Player
 {
     SDL_Rect rect;
     SDL_Renderer *renderer;
-    Vector *vector;
+    Vector *position;
 };
 
 static void init(Player * c, SDL_Renderer* r);
@@ -29,6 +29,15 @@ Player *Player_new(SDL_Renderer* r)
     return c;
 }
 
+void Player_clear(Player *c)
+{
+    if(c != NULL)
+    {
+        Vector_clear(c->position);
+        free(c);
+    }
+}
+
 static void init(Player * c, SDL_Renderer* r)
 {
     if(c == NULL)
@@ -40,7 +49,7 @@ static void init(Player * c, SDL_Renderer* r)
     c->rect.h = 50;
 
     c->renderer = r;
-    c->vector = Vector_new(0, 0);
+    c->position = Vector_new(0, 0);
 }
 
 void Player_draw(const Player *c)
@@ -62,8 +71,8 @@ void Player_draw(const Player *c)
 void Player_update(Player *c, const Uint8 *k_state)
 {
     update_position(c, k_state);
-    c->rect.x = Vector_get_x(c->vector);
-    c->rect.y = Vector_get_y(c->vector);
+    c->rect.x = Vector_get_x(c->position);
+    c->rect.y = Vector_get_y(c->position);
 }
 
 static void update_position(Player *c, const Uint8 *k_state)
@@ -77,16 +86,16 @@ static void update_position(Player *c, const Uint8 *k_state)
 
 static void move_to_left(Player *c)
 {
-    Vector_update(c->vector,
-            Vector_get_x(c->vector) - 1,
-            Vector_get_y(c->vector));
+    Vector_update(c->position,
+            Vector_get_x(c->position) - 1,
+            Vector_get_y(c->position));
 
 }
 
 static void move_to_right(Player *c)
 {
-    Vector_update(c->vector,
-            Vector_get_x(c->vector) + 1,
-            Vector_get_y(c->vector));
+    Vector_update(c->position,
+            Vector_get_x(c->position) + 1,
+            Vector_get_y(c->position));
 
 }
