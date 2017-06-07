@@ -1,5 +1,12 @@
 #include <stdlib.h>
 
+#ifdef TEST
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
+#endif
+
 #include "utils.h"
 
 struct Vector {
@@ -13,7 +20,11 @@ Vector* Vector_new(int x, int y)
 {
     Vector *v;
 
+#ifdef TEST
+    v = (Vector *) test_malloc(sizeof(Vector));
+#else
     v = (Vector *) malloc(sizeof(Vector));
+#endif
 
     if(v == NULL)
         return NULL;
@@ -26,7 +37,14 @@ Vector* Vector_new(int x, int y)
 void Vector_clear(Vector *v)
 {
     if(v != NULL)
+    {
+#ifdef TEST
+        test_free(v);
+#else
         free(v);
+#endif
+        v = NULL;
+    }
 }
 
 static void init(Vector *v, int x, int y)
