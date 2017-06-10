@@ -3,6 +3,6 @@ sudo: required
 dist: trusty
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get install -qq cmake libsdl2-dev libsdl2-image-dev
+    - sudo apt-get install -qq cmake libsdl2-dev libsdl2-image-dev libcmocka-dev
 script:
     - mkdir build && cd build && cmake .. && make test_utils && ctest -V
