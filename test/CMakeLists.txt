@@ -1,0 +1,5 @@
+include_directories("${PROJECT_SOURCE_DIR}")
+add_executable(test_utils main.c utils_test.c)
+add_dependencies(test_utils test_utils)
+add_test(test_utils test_utils)
+target_link_libraries(test_utils utils cmocka)

@@ -24,3 +24,7 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS})
 
 # Linking static and shared libraries
 target_link_libraries(${PROJECT_NAME} utils player ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES})
+
+# Adding test
+enable_testing()
+add_subdirectory(test)
